@@ -28,25 +28,24 @@ app.use(express.static('public'))
 
 //     const q = req.query.name
 
-//     try {
-//         getGiphy(q, API_KEY)
-//             .then(data => {
-//                 images = data['data']
+//     getGiphy(q, API_KEY)
+//         .then(data => {
+//             images = data['data']
 
-//                 resp.status(200)
-//                 resp.type('text/html')
-//                 resp.render('search',
-//                     {
-//                         title: 'Search',
-//                         name: q,
-//                         images
-//                     }
-//                 )
-//             })
-//     } catch(e) {
-//         console.info('Failed.')
-//         console.error("Error : ", e)
-//     }
+//             resp.status(200)
+//             resp.type('text/html')
+//             resp.render('search',
+//                 {
+//                     title: 'Search',
+//                     name: q,
+//                     images
+//                 }
+//             )
+//         })
+//         .catch(e => {
+//             console.info('Failed.')
+//             console.error("Error : ", e)
+//         })
 // })
 
 app.get('/search',
