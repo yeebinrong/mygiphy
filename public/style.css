@@ -3,5 +3,11 @@
 }
 
 .image {
-    padding: 50px;
+    padding: 0px 50px 50px 50px;
+}
+
+div {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
 }

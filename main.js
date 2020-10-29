@@ -50,19 +50,26 @@ app.use(express.static('public'))
 
 app.get('/search',
     async (req, resp) => {
-        const search =req.query['name']
+        const search = req.query['name']
         
-        const result = await getGiphy(search, API_KEY)
-        const images = result['data']
+        try {
+            // attempt async function to retrieve data from GIPHY API
+            const result = await getGiphy(search, API_KEY)
+            const images = result['data']
 
-        resp.status(200)
-        resp.render('search',
-            {
-                title: 'Searching for GIFs',
-                name: search,
-                images
-            }
-        )
+            // render the webpage 'search' with the following string keys
+            resp.status(200)
+            resp.render('search',
+                {
+                    title: 'Searching for GIFs',
+                    name: search,
+                    images,
+                    hasContent: images.length
+                }
+            )
+        } catch (e) {
+            console.error('search ERROR : ', e, '(Check your API key)')
+        }
     }
 )
 
@@ -76,23 +83,38 @@ app.get('/', (req, resp) => {
     )
 })
 
-// methods 
+// ##METHODS##
+// async function to retrieve data from GIPHY API
 const getGiphy = async (search, API_KEY) => {
+    // using withQuery to generate URL with endpoint and query strings
     const URL = withQuery(
         ENDPOINT,
         {
             q: search,
             api_key: API_KEY,
-            limit: 12
+            limit: '12'
         }
     )
-    //console.info(`URL IS : ${URL}`)
-    const result = await fetch(URL)
+
     try {
-        const dataArray = await result.json()
-        return dataArray
-    } catch (e) {
-        console.error('ERROR', e)
+        // attempt to fetch data from URL
+        const result = await fetch(URL)
+        // check if the result fetched is OK 200
+        if (result.status == 200)
+        {
+            // attempt to convert result into json
+            const dataArray = await result.json()
+            return Promise.resolve(dataArray)
+        }
+        else
+        {
+            // rejects if the data fetched is !OK
+            return Promise.reject(result.statusText)
+        }
+    } 
+    // catch if any error occurs in fetching data from URL
+    catch (e) {
+        console.error('fetch ERROR : ', e)
         return Promise.reject(e)
     }
 }

@@ -1,5 +1,15 @@
 <p>You are searching for {{name}}</p>
 
-{{#each images}}
-    <img class="image" src='{{this.images.fixed_height.url}}' alt=''>
-{{/each}}
+{{#if hasContent}}
+    {{#each images}}
+        <div>
+            <h5>{{this.title}}</h5>
+            <img class="image" src='{{this.images.fixed_height.url}}' alt=''>
+        </div>
+        
+    {{/each}}
+{{else}}
+    <div>
+        <h2>You have returned no results!</h2>
+    </div>
+{{/if}}
